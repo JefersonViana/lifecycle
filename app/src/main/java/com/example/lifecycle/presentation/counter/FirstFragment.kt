@@ -1,12 +1,15 @@
-package com.example.lifecycle
+package com.example.lifecycle.presentation.counter
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
+import com.example.lifecycle.R
 import com.example.lifecycle.databinding.FragmentFirstBinding
+import com.example.lifecycle.presentation.ViewModelFactory
 
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
@@ -19,6 +22,9 @@ class FirstFragment : Fragment() {
     // onDestroyView.
     private val binding get() = _binding!!
 
+    private val viewModel by activityViewModels<MainViewModel> {
+        ViewModelFactory()
+    }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -33,6 +39,8 @@ class FirstFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.buttonFirst.setOnClickListener {
+            val incrementBy = binding.edittextIncrementBy.text.toString()
+            viewModel.incrementBy = incrementBy.toIntOrNull() ?: 1
             findNavController().navigate(R.id.action_FirstFragment_to_SecondFragment)
         }
     }
